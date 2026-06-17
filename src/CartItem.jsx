@@ -9,7 +9,9 @@ const CartItem = ({ onContinueShopping, addedToCart, setAddedToCart, includesPla
 
   // Calculate total amount for all products in the cart
   const calculateTotalAmount = () => {
-    
+    return cart.reduce((total, item) => 
+        total + item.quantity * parseInt(item.cost.match(/\d+/)[0])
+        ,0);
   };
 
   const handleContinueShopping = (e) => {
@@ -70,7 +72,8 @@ const CartItem = ({ onContinueShopping, addedToCart, setAddedToCart, includesPla
       <div className="continue_shopping_btn">
         <button className="get-started-button" onClick={(e) => handleContinueShopping(e)}>Continue Shopping</button>
         <br />
-        <button className="get-started-button1">Checkout</button>
+        <button className="get-started-button1"
+        onClick={() => alert("Functionality to be added for future reference")}>Checkout</button>
       </div>
     </div>
   );
