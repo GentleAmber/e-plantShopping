@@ -262,10 +262,12 @@ function ProductList({ onHomeClick }) {
     const handleAddToCart = (e, plant) => {
         e.preventDefault();
         if (!includesPlant(addedToCart,plant)) {
+            console.log([...addedToCart, plant]);
             setAddedToCart([...addedToCart, plant]);
             dispatch(addItem(plant));
         }
     };
+    // Checks if an array of plants includes a specific plant
     const includesPlant = (array, plant) => {
         return array.map(e => e.name).includes(plant.name);
     };
@@ -315,7 +317,10 @@ function ProductList({ onHomeClick }) {
 
                 </div>
             ) : (
-                <CartItem onContinueShopping={handleContinueShopping} />
+                <CartItem onContinueShopping={handleContinueShopping}
+                addedToCart={addedToCart}
+                setAddedToCart={setAddedToCart}
+                includesPlant={includesPlant}/>
             )}
         </div>
     );

@@ -3,33 +3,46 @@ import { useSelector, useDispatch } from 'react-redux';
 import { removeItem, updateQuantity } from './CartSlice';
 import './CartItem.css';
 
-const CartItem = ({ onContinueShopping }) => {
+const CartItem = ({ onContinueShopping, addedToCart, setAddedToCart, includesPlant }) => {
   const cart = useSelector(state => state.cart.items);
   const dispatch = useDispatch();
 
   // Calculate total amount for all products in the cart
   const calculateTotalAmount = () => {
- 
+    
   };
 
   const handleContinueShopping = (e) => {
-   
+    onContinueShopping(e);
   };
 
 
 
   const handleIncrement = (item) => {
+    dispatch(updateQuantity({direction: 1, plant: item}));
   };
 
   const handleDecrement = (item) => {
-   
+    dispatch(updateQuantity({direction: -1, plant: item}));
+    
+    if (cart.find((i) => i.name === item.name)
+    && cart.find((i) => i.name === item.name).quantity === 1
+    && includesPlant(addedToCart, item)) {
+        setAddedToCart(addedToCart.filter((i) => i.name !== item.name));
+    }
   };
 
   const handleRemove = (item) => {
+    dispatch(removeItem(item));
+    if (!includesPlant(addedToCart, item)) return;
+
+    setAddedToCart(addedToCart.filter((i) => i.name !== item.name));
   };
 
   // Calculate total cost based on quantity for an item
   const calculateTotalCost = (item) => {
+    const cost = parseInt(item.cost.match(/\d+/)[0]);
+    return item.quantity * cost;
   };
 
   return (

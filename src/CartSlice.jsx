@@ -10,17 +10,35 @@ export const CartSlice = createSlice({
         const plant = action.payload;
         const index = state.items.findIndex((p) => p.name === plant.name);
 
-        if (index !== -1) {
-            state.items[index].quantity += 1;
-        } else {
-            state.items.push({...plant, quantity: 1});
-        }
+        if (index !== -1) return;
 
+        state.items.push({...plant, quantity: 1});
     },
     removeItem: (state, action) => {
+        const plant = action.payload;
+        const index = state.items.findIndex((p) => p.name === plant.name);
+
+        if (index === -1) return;
+
+        state.items.splice(index, 1);
     },
     updateQuantity: (state, action) => {
+        const { direction, plant } = action.payload;
+        const index = state.items.findIndex((p) => p.name === plant.name);
 
+        if (index === -1) return;
+
+        switch (direction) {
+            case -1: 
+                if (state.items[index].quantity > 1) state.items[index].quantity -= 1;
+                else if (state.items[index].quantity <= 1) state.items.splice(index, 1);
+
+                break;
+            case 1: 
+                if (state.items[index].quantity < 999) state.items[index].quantity += 1;
+                
+                break;
+        }
     
     },
   },
